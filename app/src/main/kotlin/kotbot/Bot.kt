@@ -9,6 +9,7 @@ import dev.kord.core.on
 import dev.kord.rest.builder.message.create.UserMessageCreateBuilder
 import dev.kord.rest.builder.message.create.allowedMentions
 import dev.kord.rest.builder.message.create.embed
+import kotbot.commands.reddit.RedditHandler
 import kotlinx.coroutines.runBlocking
 
 fun main() {
@@ -18,8 +19,7 @@ fun main() {
 }
 
 class Bot(val bot: Kord) {
-    // prefix that the bot will listen for
-    private val PREFIX = "*"
+    private val redditHandler = RedditHandler()
 
     init {
         bot.on(consumer = ::onMessageSend)
@@ -32,12 +32,10 @@ class Bot(val bot: Kord) {
 
         if (message.author?.isBot != false) return
 
-        if (message.content.startsWith(PREFIX)) {
-            val command = message.content.removePrefix(PREFIX)
-
-            if (command.startsWith("help")) {
-                message.channel.createMessage(builder = (::helpEmbed)(message.id))
-            }
+        if (message.content.startsWith(Prefixes.REDDIT.prefix)) {
+            redditHandler.redditCommand(message)
+        } else if (message.content.startsWith(Prefixes.HELP.prefix)) {
+            message.channel.createMessage(builder = (::helpEmbed)(message.id))
         }
     }
 
@@ -55,8 +53,13 @@ class Bot(val bot: Kord) {
                 color = Color(0xa343d2)
 
                 description =
-                    "**`${PREFIX}r/{subreddit}`** —\nGet a hot post from any subreddit!\n\n" +
-                    "**`${PREFIX}ask {question}`** —\nAsk a question (preferably one with a definite answer) to be answered.\n\n"
+                    "**Reddit Finder**\n" +
+                    "**`${MASTER_PREFIX}r/{subreddit} [sort]`** \nGet a hot post from any subreddit!\n" +
+                    "*default sort*: `hot`\n" +
+                    "*sort options*: `hot`, `top`, `new`, `rising`, `controversial`\n" +
+                    "*example*: `*r/funny new` to find a new post on r/funny\n\n" +
+
+                    "**`${MASTER_PREFIX}ask {question}`** \nAsk a question (preferably one with a definite answer) to be answered.\n\n"
 
                 footer {
                     text = "KotBot — Made with ❤️ and Kotlin"

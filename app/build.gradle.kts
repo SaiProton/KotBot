@@ -31,6 +31,9 @@ dependencies {
 
     // Kord Library
     implementation("dev.kord:kord-core:0.8.0-M5")
+
+    // Gson Library
+    implementation("com.google.code.gson:gson:2.8.8")
 }
 
 application {
