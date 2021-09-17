@@ -10,3 +10,5 @@ build
 # Ignore output build directory
 app/build
 
+# Wouldn't wanna upload private keys to a public repo...
+app/src/main/kotlin/kotbot/Keys.kt

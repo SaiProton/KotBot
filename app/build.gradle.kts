@@ -42,4 +42,17 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "kotbot.BotKt"
     }
+
+    // Exclude the broken metadata files
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude("META-INF/BC1024KE.RSA", "META-INF/BC1024KE.SF", "META-INF/BC1024KE.DSA")
+    exclude("META-INF/BC2048KE.RSA", "META-INF/BC2048KE.SF", "META-INF/BC2048KE.DSA")
+
+    // To add all of the dependencies
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 }
