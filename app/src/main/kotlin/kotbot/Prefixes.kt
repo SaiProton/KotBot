@@ -5,6 +5,6 @@ const val MASTER_PREFIX = "*"
 
 enum class Prefixes(val prefix: String) {
     REDDIT("${MASTER_PREFIX}r/"),
-    ASK("${MASTER_PREFIX}ask"),
+    ASK("${MASTER_PREFIX}ask "),
     HELP("${MASTER_PREFIX}help")
 }

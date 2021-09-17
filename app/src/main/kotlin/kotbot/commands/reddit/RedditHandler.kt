@@ -9,9 +9,6 @@ import dev.kord.rest.builder.message.create.embed
 import kotbot.utils.checkIfImage
 import dev.kord.core.behavior.channel.createMessage
 
-// Reddit command prefix
-const val PREFIX = "r/"
-
 class RedditHandler {
     /***
      * Takes in a user's reddit command to obtain the subreddit's data via HTTP request
@@ -53,7 +50,7 @@ class RedditHandler {
             messageReference = messageId
 
             content = "Serving up some `$sort` content from **`${post.data.subreddit_name_prefixed}`** " +
-                if (!post.data.over_18) "(¬‿¬)" else "(ಠ_ಠ)"
+                if (post.data.over_18) "(ಠ_ಠ)" else "(¬‿¬)"
 
             allowedMentions {
                 repliedUser = true

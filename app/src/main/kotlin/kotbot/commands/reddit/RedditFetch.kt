@@ -21,14 +21,14 @@ suspend fun fetchRedditData(message: String): Pair<RedditData?, String> {
 
     if (sub.size == 1)  sub.add(validOptions[0])
 
-    if (sub[1] !in validOptions) return Pair(null, sub[1])
+    if (sub[1] !in validOptions) return null to sub[1]
 
     // stores the HTTP response as a JSON string
     val response: String = HttpClient().use { client ->
         client.get("https://www.reddit.com/${sub[0]}.json?sort=${sub[1]}&limit=100")
     }
 
-    return Pair(gson.fromJson(response, RedditData::class.java), sub[1])
+    return gson.fromJson(response, RedditData::class.java) to sub[1]
 }
 
 data class RedditData(val data: RootData)

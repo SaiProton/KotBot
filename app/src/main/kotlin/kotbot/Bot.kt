@@ -9,6 +9,7 @@ import dev.kord.core.on
 import dev.kord.rest.builder.message.create.UserMessageCreateBuilder
 import dev.kord.rest.builder.message.create.allowedMentions
 import dev.kord.rest.builder.message.create.embed
+import kotbot.commands.ask.AskHandler
 import kotbot.commands.reddit.RedditHandler
 import kotlinx.coroutines.runBlocking
 
@@ -20,6 +21,7 @@ fun main() {
 
 class Bot(val bot: Kord) {
     private val redditHandler = RedditHandler()
+    private val askHandler = AskHandler()
 
     init {
         bot.on(consumer = ::onMessageSend)
@@ -34,6 +36,8 @@ class Bot(val bot: Kord) {
 
         if (message.content.startsWith(Prefixes.REDDIT.prefix)) {
             redditHandler.redditCommand(message)
+        } else if (message.content.startsWith(Prefixes.ASK.prefix)) {
+            askHandler.askCommand(message)
         } else if (message.content.startsWith(Prefixes.HELP.prefix)) {
             message.channel.createMessage(builder = (::helpEmbed)(message.id))
         }
